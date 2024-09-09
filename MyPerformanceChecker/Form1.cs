@@ -10,12 +10,17 @@ using System.Reflection;
 using System.Reflection.PortableExecutable;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using static System.Windows.Forms.AxHost;
+using System.Data.Common;
 
 namespace MyPerformanceChecker
 {
@@ -23,7 +28,8 @@ namespace MyPerformanceChecker
     {
         DataTable dataTable = new DataTable();
         List<KeyValuePair<string, string>> siteLogLocation = new List<KeyValuePair<string, string>>();
-
+        private System.Windows.Forms.ToolTip chartToolTip = new System.Windows.Forms.ToolTip();
+        List<int> indexList = new List<int>();
         public Form1()
         {
             InitializeComponent();
@@ -33,17 +39,7 @@ namespace MyPerformanceChecker
             {
                 comboBoxSiteList.SelectedIndex = 0; // Selects the first option in the ComboBox
             }
-            //comboBoxDuration.Items.Add(1);
-            //comboBoxDuration.Items.Add(2);
-            //comboBoxDuration.Items.Add(3);
-            //comboBoxDuration.Items.Add(4);
-            //comboBoxDuration.Items.Add(5);
-            //comboBoxDuration.SelectedIndex = 0;
             chart1.Visible = false;
-            //chart2.Visible = false;
-            //chart3.Visible = false;
-            //chart4.Visible = false;
-            //chart5.Visible = false;
 
             statusComboBox.Items.Add("All");
             statusComboBox.Items.Add(200);
@@ -80,6 +76,7 @@ namespace MyPerformanceChecker
             // comboBoxDuration.Visible = false;
 
         }
+
         public void ListIISSites()
         {
             using (ServerManager serverManager = new ServerManager())
@@ -91,27 +88,13 @@ namespace MyPerformanceChecker
                 // Loop through each site in IIS
                 foreach (Microsoft.Web.Administration.Site site in serverManager.Sites)
                 {
-                    // Add the site name and ID to the ListBox
                     comboBoxSiteList.Items.Add(site.Name);
-                    //ConfigurationSection logFileSection = site.GetWebConfiguration().GetSection("system.applicationHost/log");
-
-                    // Retrieve the log file directory
-                    // string logFileDirectory = logFileSection["directory"].ToString();
-                    // siteLogLocation.Add(new KeyValuePair<string, string>(site.Name, logFileDirectory));
                 }
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            //chart2.Visible = false;
-            //chart3.Visible = false;
-            //chart4.Visible = false;
-            //chart5.Visible = false;
-            // dataGridView1.Rows.Clear();
-
-
             string siteName = comboBoxSiteList.SelectedItem.ToString();
             var selectedValue = comboBoxIISLogList.SelectedItem;
             if (string.Equals(siteName.ToLower(), "select site") && selectedValue == null)
@@ -262,7 +245,9 @@ namespace MyPerformanceChecker
                     }
                 }
             }
-
+            dataTable = ConvertColumnType(dataTable, "time-taken", typeof(int));
+            dataTable = ConvertColumnType(dataTable, "time", typeof(DateTime));
+            
             InitializeChart(dataTable);
         }
         public void InitializeChart(DataTable dataTable)
@@ -278,7 +263,10 @@ namespace MyPerformanceChecker
             Series series = new Series("Time taken for the site: ")
             {
                 ChartType = SeriesChartType.Line, // Set the chart type (Line, Bar, Pie, etc.)
-                BorderWidth = 2
+                BorderWidth = 2,
+                MarkerStyle = MarkerStyle.Circle,  // Set the marker style to dot (circle)
+                MarkerSize = 8,                    // Size of the marker (dot)
+                MarkerColor = System.Drawing.Color.Red
             };
             chart.Series.Clear();
             chart.Series.Add(series);
@@ -307,6 +295,10 @@ namespace MyPerformanceChecker
             {
                 foreach (DataRow row in dataTable?.Rows)
                 {
+                    // var dateTimeVal = Convert.ToDateTime(row["time"]);
+                    // var dateTimeNewVal = new DateTime(dateTimeVal.Year, dateTimeVal.Month, dateTimeVal.Day, dateTimeVal.Hour, dateTimeVal.Minute, dateTimeVal.Second);
+                    //DateTime datePart1 = DateTime.Parse(row["date"].ToString());
+                    DateTime dateTimeNewVal = DateTime.Parse(row["time"].ToString());
 
                     if (string.Equals(selectStatusCode.ToLower(), "all"))
                     {
@@ -314,8 +306,8 @@ namespace MyPerformanceChecker
                         object timeTaken = row["time-taken"];
                         int timeTakenValue = int.Parse(timeTaken.ToString());
                         timeTakenValues.Add(timeTakenValue);
-                        object time = row["time"];
-                        series.Points.AddXY(time, timeTaken);
+                        // object time = row["time"];
+                        series.Points.AddXY(dateTimeNewVal, timeTaken);
                     }
                     else if (string.Equals(selectStatusCode.ToLower(), row["sc-status"].ToString()))
                     {
@@ -324,8 +316,8 @@ namespace MyPerformanceChecker
                         object timeTaken = row["time-taken"];
                         int timeTakenValue = int.Parse(timeTaken.ToString());
                         timeTakenValues.Add(timeTakenValue);
-                        object time = row["time"];
-                        series.Points.AddXY(time, timeTaken);
+                        // object time = row["time"];
+                        series.Points.AddXY(dateTimeNewVal, timeTaken);
                     }
                 }
             }
@@ -340,11 +332,6 @@ namespace MyPerformanceChecker
             {
                 // Customize the Chart
                 chart.Titles.Clear();
-                string title = String.Format("Time taken trend(ms), Min value: {0}, Max value: {1}, Avg value: {2}", timeTakenValues.Min(), timeTakenValues.Max(), Math.Round(timeTakenValues.Average(), 2));
-                chart.Titles.Add(title);
-                //chart.Titles.Add("Min value: " + timeTakenValues.Min());
-                //chart.Titles.Add("Max value: " + timeTakenValues.Max());
-                //chart.Titles.Add("Avg value: " + timeTakenValues.Average());
                 chart.ChartAreas[0].AxisX.Title = "time";
                 chart.ChartAreas[0].AxisY.Title = "time taken";
                 chart.Series[0].Color = System.Drawing.Color.Blue;
@@ -367,21 +354,53 @@ namespace MyPerformanceChecker
                 dataTableCustom.Rows.Add(newRow);
                 dataTable = dataTableCustom;
             }
+            chart.MouseMove += Chart_MouseMove;
+            labelTotalNoOfRequests.Text = "Total number of requests are: " + dataTable.Rows.Count;
             dataGridView1.DataSource = dataTable;
         }
+        private void Chart_MouseMove(object sender, MouseEventArgs e)
+        {
+            Chart chart = sender as Chart;
+            HitTestResult result = chart.HitTest(e.X, e.Y);
+            DataPoint dataPoint = null;
+            DateTime xDate = new DateTime();
+            DataGridViewRow newRow = dataGridView1.Rows[0];
+            if (result.ChartElementType == ChartElementType.DataPoint)
+            {
+                dataPoint = chart.Series[0].Points[result.PointIndex];
+                xDate = DateTime.FromOADate(dataPoint.XValue); // Convert XValue to DateTime
 
+                // Show tooltip with formatted date and value
+                chartToolTip.Show($"Date: {xDate:dd-MM-yyyy}, Value: {dataPoint.YValues[0]}",
+                                  chart, e.X, e.Y - 15);
+                newRow = dataGridView1.Rows
+                 .Cast<DataGridViewRow>()
+                 .FirstOrDefault(row => Convert.ToDateTime(row.Cells["time"].Value) == xDate && Convert.ToInt64(row.Cells["time-taken"].Value) == dataPoint.YValues[0]);
+
+                dataGridView1.FirstDisplayedScrollingRowIndex = newRow.Index; // Scroll to the row if needed
+                indexList.Add(newRow.Index);
+                newRow.DefaultCellStyle.BackColor = System.Drawing.Color.LightGreen;
+            }
+            else
+            {
+                chartToolTip.Hide(chart);
+                if (indexList.Count > 0)
+                {
+                    for (int i = 0; i < indexList.Count; i++)
+                    {
+                        DataGridViewRow row = dataGridView1.Rows[indexList[i]];
+                        row.DefaultCellStyle.BackColor = System.Drawing.Color.Empty;
+                    }
+                    indexList = new List<int>();
+                }
+                // dataGridView1.FirstDisplayedScrollingRowIndex = newRow.Index; // Scroll to the row if needed
+
+            }
+        }
         private void chart1_Click(object sender, EventArgs e)
         {
 
         }
-
-        //private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    string siteName = comboBox1.SelectedItem.ToString();
-        //    int? siteId = GetSiteId(siteName);
-        //    string[] iisFiles = GetIisFiles(siteId);
-        //    iisfilesComboBox.Items.AddRange(iisFiles);
-        //}
 
         private string[] GetIisFiles(int? siteId)
         {
@@ -562,16 +581,138 @@ namespace MyPerformanceChecker
         {
 
             int currentTabIndex = tabControl1.SelectedIndex;
-            MessageBox.Show($"Current Tab Index: {currentTabIndex}");
-            if (currentTabIndex == 1)
+            switch (currentTabIndex)
             {
-                DataTable dtTop20SlowReq = dataTable.AsEnumerable().OrderByDescending(row => row.Field<string>("time-taken")).Take(20).CopyToDataTable();
+                case 1:
+                    dataTable.AsEnumerable().OrderByDescending(x => x.Field<int>("time-taken")).CopyToDataTable();
+                    DataView sortedView = new DataView(dataTable);
+                    sortedView.Sort = "time-taken desc";
+                    dataTable = sortedView.ToTable();
+                    dataGridViewTop20SlowReqs.DataSource = dataTable.AsEnumerable().Take(20).CopyToDataTable();
+                    break;
 
+                case 2:
+                    DataTable resultTable = GroupByAndFindMinMax(dataTable, "cs-uri-stem");
+
+                    // Bind the result DataTable to a DataGridView
+                    dataGridViewTop25SlowUrls.DataSource = resultTable.AsEnumerable().Take(25).CopyToDataTable(); 
+                    break;
+                case 3:
+                    DataTable dtPerHour = GroupByRequestPerHour(dataTable);
+                    dataGridViewRequestPerHour.DataSource = dtPerHour;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        static DataTable ConvertColumnType(DataTable oldTable, string columnName, Type newType)
+        {
+            DataTable newTable = new DataTable();
+
+            // Copy the schema from the old table but with the new column type
+            foreach (DataColumn column in oldTable.Columns)
+            {
+                if (column.ColumnName == columnName)
+                {
+                    newTable.Columns.Add(column.ColumnName, newType);
+                }
+                else
+                {
+                    newTable.Columns.Add(column.ColumnName, column.DataType);
+                }
             }
 
-        }
-    }
+            // Copy rows and convert the column type
+            foreach (DataRow row in oldTable.Rows)
+            {
+                DataRow newRow = newTable.NewRow();
+                foreach (DataColumn column in oldTable.Columns)
+                {
+                    if (column.ColumnName == columnName)
+                    {
+                        if (columnName == "time")
+                        {
+                            DateTime datePart = DateTime.Parse(row["date"].ToString());
+                            TimeSpan timePart = TimeSpan.Parse(row["time"].ToString());
+                            DateTime combinedDateTime = datePart.Date + timePart;
+                            newRow[column.ColumnName] = combinedDateTime;
+                        }
+                        else
+                            // Convert the column value to the new type
+                            newRow[column.ColumnName] = Convert.ChangeType(row[column.ColumnName], newType);
+                    }
+                    else
+                    {
+                        newRow[column.ColumnName] = row[column.ColumnName];
+                    }
+                }
+                newTable.Rows.Add(newRow);
+            }
 
+            return newTable;
+        }
+
+        private DataTable GroupByAndFindMinMax(DataTable dt, string groupByColumn)
+        {
+            var groupedData = dt.AsEnumerable()
+                .GroupBy(row => row.Field<string>("cs-uri-stem"))
+                .Select(g => new
+                {
+                    Group = g.Key,
+                    MaxValue = g.Max(row => row.Field<int>("time-taken")),
+                    MinValue = g.Min(row => row.Field<int>("time-taken"))
+                })
+                .ToList();
+
+            // Create a new DataTable to hold the results
+            DataTable resultTable = new DataTable();
+            resultTable.Columns.Add("Group", typeof(string));
+            resultTable.Columns.Add("MaxValue", typeof(int));
+            resultTable.Columns.Add("MinValue", typeof(int));
+            resultTable.Columns.Add("Avg", typeof(int));
+
+            // Populate the result DataTable
+            foreach (var data in groupedData)
+            {
+                DataRow row = resultTable.NewRow();
+                row["Group"] = data.Group;
+                int minVal = data.MinValue;
+                int maxVal = data.MaxValue;
+                row["MaxValue"] = maxVal;
+                row["MinValue"] = minVal;
+                row["Avg"] = (minVal + maxVal) / 2;
+                resultTable.Rows.Add(row);
+            }
+            return resultTable;
+        }
+
+        private DataTable GroupByRequestPerHour(DataTable dt)
+        {
+            var result = dt.AsEnumerable()
+                           .GroupBy(row => row.Field<DateTime>("time").ToString("yyyy-MM-dd HH:00:00")) // Group by hour
+                           .Select(g => new
+                           {
+                               Hour = g.Key,
+                               RequestCount = g.Count()
+                           });
+
+            DataTable resultTable = new DataTable();
+            resultTable.Columns.Add("Hour", typeof(DateTime));
+            resultTable.Columns.Add("RequestCount", typeof(int));
+
+            // Populate the result DataTable
+            foreach (var data in result)
+            {
+                DataRow row = resultTable.NewRow();
+                row["Hour"] = data.Hour;
+                row["RequestCount"] = data.RequestCount;
+                resultTable.Rows.Add(row);
+            }
+            return resultTable;
+        }
+
+    }
     class ComboItem
     {
         public int ID { get; set; }

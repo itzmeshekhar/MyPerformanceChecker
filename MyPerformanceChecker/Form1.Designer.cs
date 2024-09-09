@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBoxSiteList = new System.Windows.Forms.ComboBox();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -54,9 +54,14 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
+            this.dataGridViewTop20SlowReqs = new System.Windows.Forms.DataGridView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.dataGridViewTop25SlowUrls = new System.Windows.Forms.DataGridView();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dataGridViewRequestPerHour = new System.Windows.Forms.DataGridView();
+            this.labelTotalNoOfRequests = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClientIP)).BeginInit();
@@ -65,7 +70,11 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTop20SlowReqs)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTop25SlowUrls)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRequestPerHour)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -89,17 +98,17 @@
             // 
             // chart1
             // 
-            chartArea7.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea7);
-            legend7.Name = "Legend1";
-            this.chart1.Legends.Add(legend7);
-            this.chart1.Location = new System.Drawing.Point(20, 444);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
+            this.chart1.Location = new System.Drawing.Point(20, 466);
             this.chart1.Name = "chart1";
-            series7.ChartArea = "ChartArea1";
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            this.chart1.Series.Add(series7);
-            this.chart1.Size = new System.Drawing.Size(2361, 278);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
+            this.chart1.Size = new System.Drawing.Size(2321, 278);
             this.chart1.TabIndex = 2;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
@@ -111,7 +120,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(2361, 211);
+            this.dataGridView1.Size = new System.Drawing.Size(2321, 211);
             this.dataGridView1.TabIndex = 5;
             // 
             // label3
@@ -133,7 +142,7 @@
             // 
             // buttonClientIp
             // 
-            this.buttonClientIp.Location = new System.Drawing.Point(20, 740);
+            this.buttonClientIp.Location = new System.Drawing.Point(20, 764);
             this.buttonClientIp.Name = "buttonClientIp";
             this.buttonClientIp.Size = new System.Drawing.Size(514, 23);
             this.buttonClientIp.TabIndex = 15;
@@ -144,7 +153,7 @@
             // clientIPComboBox
             // 
             this.clientIPComboBox.FormattingEnabled = true;
-            this.clientIPComboBox.Location = new System.Drawing.Point(213, 776);
+            this.clientIPComboBox.Location = new System.Drawing.Point(213, 793);
             this.clientIPComboBox.Name = "clientIPComboBox";
             this.clientIPComboBox.Size = new System.Drawing.Size(321, 24);
             this.clientIPComboBox.TabIndex = 16;
@@ -153,7 +162,7 @@
             // clientIpLabel
             // 
             this.clientIpLabel.AutoSize = true;
-            this.clientIpLabel.Location = new System.Drawing.Point(17, 779);
+            this.clientIpLabel.Location = new System.Drawing.Point(17, 796);
             this.clientIpLabel.Name = "clientIpLabel";
             this.clientIpLabel.Size = new System.Drawing.Size(173, 16);
             this.clientIpLabel.TabIndex = 17;
@@ -163,11 +172,11 @@
             // dataGridViewClientIP
             // 
             this.dataGridViewClientIP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewClientIP.Location = new System.Drawing.Point(20, 806);
+            this.dataGridViewClientIP.Location = new System.Drawing.Point(20, 826);
             this.dataGridViewClientIP.Name = "dataGridViewClientIP";
             this.dataGridViewClientIP.RowHeadersWidth = 51;
             this.dataGridViewClientIP.RowTemplate.Height = 24;
-            this.dataGridViewClientIP.Size = new System.Drawing.Size(2358, 150);
+            this.dataGridViewClientIP.Size = new System.Drawing.Size(2321, 150);
             this.dataGridViewClientIP.TabIndex = 18;
             // 
             // comboBoxIISLogList
@@ -264,15 +273,17 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(12, 11);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(2355, 991);
+            this.tabControl1.Size = new System.Drawing.Size(2355, 1011);
             this.tabControl1.TabIndex = 27;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.labelTotalNoOfRequests);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.dataGridViewClientIP);
             this.tabPage1.Controls.Add(this.comboBoxIISLogList);
@@ -287,7 +298,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(2347, 962);
+            this.tabPage1.Size = new System.Drawing.Size(2347, 982);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Basic IIS Log Details";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -295,7 +306,7 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Controls.Add(this.dataGridView2);
+            this.tabPage2.Controls.Add(this.dataGridViewTop20SlowReqs);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -303,25 +314,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Top 20 slow requests";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView2
-            // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(38, 81);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowHeadersWidth = 51;
-            this.dataGridView2.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView2.TabIndex = 0;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(2347, 962);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Request per hour";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -332,11 +324,79 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Top 20 slow requests";
             // 
+            // dataGridViewTop20SlowReqs
+            // 
+            this.dataGridViewTop20SlowReqs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTop20SlowReqs.Location = new System.Drawing.Point(38, 81);
+            this.dataGridViewTop20SlowReqs.Name = "dataGridViewTop20SlowReqs";
+            this.dataGridViewTop20SlowReqs.RowHeadersWidth = 51;
+            this.dataGridViewTop20SlowReqs.Size = new System.Drawing.Size(2258, 621);
+            this.dataGridViewTop20SlowReqs.TabIndex = 0;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.dataGridViewTop25SlowUrls);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(2347, 962);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Top 25 slow URLs";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewTop25SlowUrls
+            // 
+            this.dataGridViewTop25SlowUrls.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTop25SlowUrls.Location = new System.Drawing.Point(25, 16);
+            this.dataGridViewTop25SlowUrls.Name = "dataGridViewTop25SlowUrls";
+            this.dataGridViewTop25SlowUrls.RowHeadersWidth = 51;
+            this.dataGridViewTop25SlowUrls.RowTemplate.Height = 24;
+            this.dataGridViewTop25SlowUrls.Size = new System.Drawing.Size(2295, 839);
+            this.dataGridViewTop25SlowUrls.TabIndex = 0;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.dataGridViewRequestPerHour);
+            this.tabPage4.Controls.Add(this.label2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(2347, 962);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Request per hour";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(22, 15);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(110, 16);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Request per hour";
+            // 
+            // dataGridViewRequestPerHour
+            // 
+            this.dataGridViewRequestPerHour.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewRequestPerHour.Location = new System.Drawing.Point(25, 50);
+            this.dataGridViewRequestPerHour.Name = "dataGridViewRequestPerHour";
+            this.dataGridViewRequestPerHour.RowHeadersWidth = 51;
+            this.dataGridViewRequestPerHour.RowTemplate.Height = 24;
+            this.dataGridViewRequestPerHour.Size = new System.Drawing.Size(2307, 876);
+            this.dataGridViewRequestPerHour.TabIndex = 1;
+            // 
+            // labelTotalNoOfRequests
+            // 
+            this.labelTotalNoOfRequests.AutoSize = true;
+            this.labelTotalNoOfRequests.Location = new System.Drawing.Point(17, 429);
+            this.labelTotalNoOfRequests.Name = "labelTotalNoOfRequests";
+            this.labelTotalNoOfRequests.Size = new System.Drawing.Size(0, 16);
+            this.labelTotalNoOfRequests.TabIndex = 27;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2385, 1014);
+            this.ClientSize = new System.Drawing.Size(2385, 1026);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -354,7 +414,12 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTop20SlowReqs)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTop25SlowUrls)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRequestPerHour)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -384,9 +449,14 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView dataGridViewTop20SlowReqs;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dataGridViewTop25SlowUrls;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.DataGridView dataGridViewRequestPerHour;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelTotalNoOfRequests;
     }
 }
 
