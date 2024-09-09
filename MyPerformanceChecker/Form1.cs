@@ -76,7 +76,7 @@ namespace MyPerformanceChecker
             iigLogFilesLabel.Visible = false;
 
             labelOR.Visible = true;
-            
+
             // comboBoxDuration.Visible = false;
 
         }
@@ -350,7 +350,7 @@ namespace MyPerformanceChecker
                 chart.Series[0].Color = System.Drawing.Color.Blue;
                 chart.Visible = true;
             }
-            if(dataTable.Rows.Count <= 0)
+            if (dataTable.Rows.Count <= 0)
             {
                 DataTable dataTableCustom = new DataTable("CustomTable");
 
@@ -556,6 +556,19 @@ namespace MyPerformanceChecker
         private void comboBoxSiteList_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBoxIISLogList.Items.Clear();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            int currentTabIndex = tabControl1.SelectedIndex;
+            MessageBox.Show($"Current Tab Index: {currentTabIndex}");
+            if (currentTabIndex == 1)
+            {
+                DataTable dtTop20SlowReq = dataTable.AsEnumerable().OrderByDescending(row => row.Field<string>("time-taken")).Take(20).CopyToDataTable();
+
+            }
+
         }
     }
 

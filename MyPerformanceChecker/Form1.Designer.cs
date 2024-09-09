@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBoxSiteList = new System.Windows.Forms.ComboBox();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -54,17 +54,23 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClientIP)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(939, 42);
+            this.button1.Location = new System.Drawing.Point(964, 41);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(199, 94);
             this.button1.TabIndex = 0;
@@ -83,16 +89,16 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(12, 530);
+            chartArea7.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            this.chart1.Legends.Add(legend7);
+            this.chart1.Location = new System.Drawing.Point(20, 444);
             this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.chart1.Series.Add(series7);
             this.chart1.Size = new System.Drawing.Size(2361, 278);
             this.chart1.TabIndex = 2;
             this.chart1.Text = "chart1";
@@ -101,11 +107,11 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(15, 203);
+            this.dataGridView1.Location = new System.Drawing.Point(20, 205);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(2361, 321);
+            this.dataGridView1.Size = new System.Drawing.Size(2361, 211);
             this.dataGridView1.TabIndex = 5;
             // 
             // label3
@@ -127,7 +133,7 @@
             // 
             // buttonClientIp
             // 
-            this.buttonClientIp.Location = new System.Drawing.Point(15, 825);
+            this.buttonClientIp.Location = new System.Drawing.Point(20, 740);
             this.buttonClientIp.Name = "buttonClientIp";
             this.buttonClientIp.Size = new System.Drawing.Size(514, 23);
             this.buttonClientIp.TabIndex = 15;
@@ -138,7 +144,7 @@
             // clientIPComboBox
             // 
             this.clientIPComboBox.FormattingEnabled = true;
-            this.clientIPComboBox.Location = new System.Drawing.Point(205, 868);
+            this.clientIPComboBox.Location = new System.Drawing.Point(213, 776);
             this.clientIPComboBox.Name = "clientIPComboBox";
             this.clientIPComboBox.Size = new System.Drawing.Size(321, 24);
             this.clientIPComboBox.TabIndex = 16;
@@ -147,7 +153,7 @@
             // clientIpLabel
             // 
             this.clientIpLabel.AutoSize = true;
-            this.clientIpLabel.Location = new System.Drawing.Point(12, 871);
+            this.clientIpLabel.Location = new System.Drawing.Point(17, 779);
             this.clientIpLabel.Name = "clientIpLabel";
             this.clientIpLabel.Size = new System.Drawing.Size(173, 16);
             this.clientIpLabel.TabIndex = 17;
@@ -157,7 +163,7 @@
             // dataGridViewClientIP
             // 
             this.dataGridViewClientIP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewClientIP.Location = new System.Drawing.Point(12, 920);
+            this.dataGridViewClientIP.Location = new System.Drawing.Point(20, 806);
             this.dataGridViewClientIP.Name = "dataGridViewClientIP";
             this.dataGridViewClientIP.RowHeadersWidth = 51;
             this.dataGridViewClientIP.RowTemplate.Height = 24;
@@ -167,7 +173,7 @@
             // comboBoxIISLogList
             // 
             this.comboBoxIISLogList.FormattingEnabled = true;
-            this.comboBoxIISLogList.Location = new System.Drawing.Point(112, 173);
+            this.comboBoxIISLogList.Location = new System.Drawing.Point(98, 175);
             this.comboBoxIISLogList.Name = "comboBoxIISLogList";
             this.comboBoxIISLogList.Size = new System.Drawing.Size(573, 24);
             this.comboBoxIISLogList.TabIndex = 19;
@@ -176,7 +182,7 @@
             // iigLogFilesLabel
             // 
             this.iigLogFilesLabel.AutoSize = true;
-            this.iigLogFilesLabel.Location = new System.Drawing.Point(12, 176);
+            this.iigLogFilesLabel.Location = new System.Drawing.Point(17, 178);
             this.iigLogFilesLabel.Name = "iigLogFilesLabel";
             this.iigLogFilesLabel.Size = new System.Drawing.Size(75, 16);
             this.iigLogFilesLabel.TabIndex = 20;
@@ -215,7 +221,7 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.comboBoxSiteList);
             this.groupBox1.Controls.Add(this.labelOR);
-            this.groupBox1.Location = new System.Drawing.Point(15, 12);
+            this.groupBox1.Location = new System.Drawing.Point(20, 8);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(444, 155);
             this.groupBox1.TabIndex = 25;
@@ -246,7 +252,7 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.comboBoxTimeTakenFilter);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(499, 12);
+            this.groupBox2.Location = new System.Drawing.Point(505, 18);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(422, 143);
             this.groupBox2.TabIndex = 26;
@@ -257,49 +263,81 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(1237, 18);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(661, 100);
+            this.tabControl1.Size = new System.Drawing.Size(2355, 991);
             this.tabControl1.TabIndex = 27;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.dataGridViewClientIP);
+            this.tabPage1.Controls.Add(this.comboBoxIISLogList);
+            this.tabPage1.Controls.Add(this.clientIPComboBox);
+            this.tabPage1.Controls.Add(this.clientIpLabel);
+            this.tabPage1.Controls.Add(this.iigLogFilesLabel);
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.buttonClientIp);
+            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Controls.Add(this.chart1);
+            this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(653, 71);
+            this.tabPage1.Size = new System.Drawing.Size(2347, 962);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Basic IIS Log Details";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.dataGridView2);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(653, 71);
+            this.tabPage2.Size = new System.Drawing.Size(2347, 962);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Top 20 slow requests";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(38, 81);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.RowHeadersWidth = 51;
+            this.dataGridView2.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView2.TabIndex = 0;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(2347, 962);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Request per hour";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(35, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(134, 16);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Top 20 slow requests";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2385, 1097);
+            this.ClientSize = new System.Drawing.Size(2385, 1014);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.iigLogFilesLabel);
-            this.Controls.Add(this.comboBoxIISLogList);
-            this.Controls.Add(this.dataGridViewClientIP);
-            this.Controls.Add(this.clientIpLabel);
-            this.Controls.Add(this.clientIPComboBox);
-            this.Controls.Add(this.buttonClientIp);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.chart1);
-            this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -312,8 +350,12 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -342,6 +384,9 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label1;
     }
 }
 
