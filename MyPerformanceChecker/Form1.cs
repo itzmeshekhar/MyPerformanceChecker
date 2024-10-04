@@ -21,6 +21,10 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 using static System.Windows.Forms.AxHost;
 using System.Data.Common;
+using System.Drawing.Drawing2D;
+using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
+using System.Drawing.Printing;
 
 namespace MyPerformanceChecker
 {
@@ -30,6 +34,12 @@ namespace MyPerformanceChecker
         List<KeyValuePair<string, string>> siteLogLocation = new List<KeyValuePair<string, string>>();
         private System.Windows.Forms.ToolTip chartToolTip = new System.Windows.Forms.ToolTip();
         List<int> indexList = new List<int>();
+        private System.Drawing.Image start;
+        private System.Drawing.Image stop;
+        private bool isImage1Active;
+        private int PageSize = 500;
+        private int PageNo = 1;
+        private int totalRecordsInLog = 0;
         public Form1()
         {
             InitializeComponent();
@@ -73,8 +83,62 @@ namespace MyPerformanceChecker
 
             labelOR.Visible = true;
 
-            // comboBoxDuration.Visible = false;
+            pictureBoxLoading.Visible = false;
 
+            buttonNext.Visible = false;
+            buttonPrevious.Visible = false;
+
+        }
+
+        private DataTable GetPaginatedData(DataTable data, int pageNumber, int pageSize)
+        {
+            buttonPrevious.Visible = true;
+            buttonNext.Visible = true;
+
+            // Calculate the number of items to skip
+            int skip = (pageNumber - 1) * pageSize;
+            skip = skip < 0 ? 0 : skip;
+            int currentTotal = skip + pageSize;
+            int currentPage = currentTotal / pageSize;
+            double totalPages = Math.Ceiling(Convert.ToDouble(Convert.ToDouble(totalRecordsInLog) / Convert.ToDouble(pageSize)));
+
+            labelPageInfo.Text = $"Showing page {currentPage} of total pages {totalPages}";
+
+            if (currentTotal >= totalRecordsInLog)
+            {
+                buttonNext.Enabled = false;
+            }
+            else
+            {
+                buttonNext.Enabled = true;
+            }
+            if (currentTotal <= pageSize)
+            {
+                buttonPrevious.Enabled = false;
+            }
+            else
+            {
+                buttonPrevious.Enabled = true;
+
+            }
+            // Get the paginated data using Skip and Take
+            return data.AsEnumerable().Skip(skip).Take(pageSize).CopyToDataTable();
+
+        }
+        public System.Drawing.Image ConvertByteArrayToImage(byte[] byteArray)
+        {
+            // Check if the byte array is valid
+            if (byteArray == null || byteArray.Length == 0)
+            {
+                return null;
+            }
+
+            // Create a memory stream from the byte array
+            using (MemoryStream ms = new MemoryStream(byteArray))
+            {
+                // Return an Image object created from the memory stream
+                return System.Drawing.Image.FromStream(ms);
+            }
         }
 
         public void ListIISSites()
@@ -168,6 +232,12 @@ namespace MyPerformanceChecker
                         comboBoxIISLogList.Items.Clear();
                         comboBoxIISLogList.Items.AddRange(files);
                         comboBoxIISLogList.SelectedIndex = 0;
+
+                        comboBoxIISLogsCustomeRange.Items.Clear();
+                        comboBoxIISLogsCustomeRange.Items.AddRange(files);
+                        comboBoxIISLogsCustomeRange.SelectedIndex = 0;
+
+
                     }
                     firstFile = files[0];
                 }
@@ -247,12 +317,13 @@ namespace MyPerformanceChecker
             }
             dataTable = ConvertColumnType(dataTable, "time-taken", typeof(int));
             dataTable = ConvertColumnType(dataTable, "time", typeof(DateTime));
-            
-            InitializeChart(dataTable);
+            totalRecordsInLog = dataTable.Rows.Count;
+            DataTable newDataTable = GetPaginatedData(dataTable, PageNo, PageSize);
+            InitializeChart(newDataTable, chart1);
         }
-        public void InitializeChart(DataTable dataTable)
+        public void InitializeChart(DataTable dataTable, Chart chart)
         {
-            Chart chart = chart1;
+            //Chart chart = chart1;
             List<int> timeTakenValues = new List<int>();
 
             chart.ChartAreas.Clear();
@@ -278,9 +349,10 @@ namespace MyPerformanceChecker
                 dataTable = filteredRows.CopyToDataTable();
                 filteredRows = string.Equals(selectTimeTaken, "all") ? dataTable.AsEnumerable() : dataTable.AsEnumerable().Where(x =>
                 {
-                    string timeTakenInTable = x.Field<string>("time-taken");
+                    //string timeTakenInTable = x.Field<string>("time-taken");
                     int selectedTimeTakenFilter = int.Parse(selectTimeTaken);
-                    int timeTakenInTableNum = int.Parse(timeTakenInTable);
+                    int timeTakenInTableNum = x.Field<int>("time-taken");
+                    // int timeTakenInTableNum = int.Parse(timeTakenInTable);
                     return timeTakenInTableNum >= selectedTimeTakenFilter;
                 });
                 dataTable = filteredRows.FirstOrDefault() != null ? filteredRows.CopyToDataTable() : null;
@@ -355,7 +427,8 @@ namespace MyPerformanceChecker
                 dataTable = dataTableCustom;
             }
             chart.MouseMove += Chart_MouseMove;
-            labelTotalNoOfRequests.Text = "Total number of requests are: " + dataTable.Rows.Count;
+            //labelTotalNoOfRequests.Text = "Total number of requests are: " + dataTable.Rows.Count;
+
             dataGridView1.DataSource = dataTable;
         }
         private void Chart_MouseMove(object sender, MouseEventArgs e)
@@ -507,6 +580,12 @@ namespace MyPerformanceChecker
                     comboBoxIISLogList.Items.Clear();
                     comboBoxIISLogList.Items.AddRange(files);
                     comboBoxIISLogList.SelectedIndex = 0;
+
+                    comboBoxIISLogsCustomeRange.Items.Clear();
+                    comboBoxIISLogsCustomeRange.Items.AddRange(files);
+                    comboBoxIISLogsCustomeRange.SelectedIndex = 0;
+
+
                     comboBoxIISLogList.Visible = true;
                     dataGridView1.Visible = true;
                     buttonClientIp.Visible = true;
@@ -537,6 +616,12 @@ namespace MyPerformanceChecker
                     comboBoxIISLogList.Items.Clear();
                     comboBoxIISLogList.Items.AddRange(files);
                     comboBoxIISLogList.SelectedIndex = 0;
+
+                    comboBoxIISLogsCustomeRange.Items.Clear();
+                    comboBoxIISLogsCustomeRange.Items.AddRange(files);
+                    comboBoxIISLogsCustomeRange.SelectedIndex = 0;
+
+
                     comboBoxIISLogList.Visible = true;
                     dataGridView1.Visible = true;
                     buttonClientIp.Visible = true;
@@ -593,13 +678,24 @@ namespace MyPerformanceChecker
 
                 case 2:
                     DataTable resultTable = GroupByAndFindMinMax(dataTable, "cs-uri-stem");
-
                     // Bind the result DataTable to a DataGridView
-                    dataGridViewTop25SlowUrls.DataSource = resultTable.AsEnumerable().Take(25).CopyToDataTable(); 
+                    dataGridViewTop25SlowUrls.DataSource = resultTable.AsEnumerable().Take(25).CopyToDataTable();
                     break;
+
                 case 3:
                     DataTable dtPerHour = GroupByRequestPerHour(dataTable);
                     dataGridViewRequestPerHour.DataSource = dtPerHour;
+                    break;
+
+                case 4:
+                    //List<DateTime> dateTimeStrings = dataTable.AsEnumerable().Select(x => x.Field<DateTime>("time")).Distinct().ToList();
+                    //string[] dateStrings = dateTimeStrings.ConvertAll(date => date.ToString("HH:mm:ss")).ToArray();
+                    //Thread.Sleep(2000);
+                    //pictureBoxLoading.Visible = false;
+                    //comboBoxStartTime.Items.AddRange(dateStrings);
+                    //comboBoxStartTime.SelectedIndex = 0;
+                    //comboBoxEndTime.Items.AddRange(dateStrings);
+                    //comboBoxEndTime.SelectedIndex = 0;
                     break;
 
                 default:
@@ -712,6 +808,76 @@ namespace MyPerformanceChecker
             return resultTable;
         }
 
+        private void buttonRecordCommand_Click(object sender, EventArgs e)
+        {
+            string btnText = buttonRecordCommand.Text.ToLower();
+            if (string.Equals(btnText, "start"))
+            {
+                richTextBoxVoiceCommand.Text = "Recording.....";
+                buttonRecordCommand.Text = "Stop";
+            }
+            else
+            {
+                pictureBoxLoading.Visible = true;
+                using (System.IO.FileStream fs = new System.IO.FileStream(@"C:\Users\csahu\Downloads\Loading-Windows-HTML-CSS.gif", System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                {
+                    System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                    fs.CopyTo(ms);
+                    pictureBoxLoading.Image = System.Drawing.Image.FromStream(ms);
+                }
+                //Thread.Sleep(2000);
+                pictureBoxLoading.Visible = false;
+                richTextBoxVoiceCommand.Text = "Pull iis records for September 5th from 07.00PM to 07.20PM";
+                buttonRecordCommand.Text = "Start";
+
+                List<DateTime> dateTimeStrings = dataTable.AsEnumerable().Select(x => x.Field<DateTime>("time")).Distinct().ToList();
+                string[] dateStrings = dateTimeStrings.ConvertAll(date => date.ToString("HH:mm:ss")).ToArray();
+                //Thread.Sleep(2000);
+                pictureBoxLoading.Visible = false;
+                comboBoxStartTime.Items.AddRange(dateStrings);
+                comboBoxStartTime.SelectedIndex = 0;
+                comboBoxStartTime.Visible = true;
+                comboBoxEndTime.Items.AddRange(dateStrings);
+                comboBoxEndTime.SelectedIndex = 4;
+                comboBoxEndTime.Visible = true;
+                comboBoxIISLogsCustomeRange.Visible = true;
+                labelCustomeRangeEndtime.Visible = true;
+                labelCustomeTimeRange.Visible = true;
+                labellabelCustomeRangeStarttime.Visible = true;
+                DataTable dtCustomRange = dataTable.AsEnumerable().Take(17).CopyToDataTable();
+                InitializeChart(dtCustomRange, chartCustomRange);
+                dataGridViewCustomRange.DataSource = dtCustomRange;
+
+            }
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            PageNo++;
+            DataTable dt = GetPaginatedData(dataTable, PageNo, PageSize);
+            dataGridView1.DataSource = dt;
+            chart1 = new Chart();
+            InitializeChart(dt, chart1);
+        }
+
+        private void buttonPrevious_Click(object sender, EventArgs e)
+        {
+            PageNo--;
+            DataTable dt = GetPaginatedData(dataTable, PageNo, PageSize);
+            dataGridView1.DataSource = dt;
+            chart1 = new Chart();
+            InitializeChart(dt, chart1);
+        }
     }
     class ComboItem
     {
